@@ -1,33 +1,43 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import axios from 'axios'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [billboardData, setBillboardData] = useState(null);
+
+  const getData = () => {
+    const options = {
+      method: 'GET',
+      url: 'https://billboard-api2.p.rapidapi.com/billboard-200',
+      params: {
+        date: '2019-05-11',
+        range: '1-10'
+      },
+      headers: {
+        'X-RapidAPI-Key': 'b02a747d18mshe2d139c32d81ce8p1674edjsnd1557879389b',
+        'X-RapidAPI-Host': 'billboard-api2.p.rapidapi.com'
+      }
+    };
+  
+    axios.request(options)
+      .then(response => {
+         response.data[0];
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+  
+  getData();
+  
 
   return (
     <>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <h1>BILLBOARD CHART TOP 100!!</h1>
+      {billboardData ? <h2>{billboardData}</h2> : null}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
